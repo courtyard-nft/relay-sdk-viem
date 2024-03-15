@@ -1,4 +1,4 @@
-import { getAddress } from "ethers";
+import { getAddress } from "viem";
 
 import {
   CallWithConcurrentERC2771Request,

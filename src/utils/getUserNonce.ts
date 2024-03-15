@@ -1,31 +1,34 @@
-import { ethers } from "ethers";
+import { WalletClient, publicActions, parseAbi } from "viem";
 
 import { USER_NONCE_ABI } from "../constants";
-import { Config, SignerOrProvider } from "../lib/types";
+import { Config } from "../lib/types";
 import { ERC2771Type } from "../lib/erc2771/types";
 
 import { getGelatoRelayERC2771Address } from "./relayAddress";
-import { getProviderChainId } from "./getProviderChainId";
 
 export const getUserNonce = async (
   payload: {
     account: string;
     type: ERC2771Type;
-    signerOrProvider: SignerOrProvider;
+    client: WalletClient;
   },
   config: Config
 ): Promise<bigint> => {
-  const { account, type, signerOrProvider } = payload;
-  if (!signerOrProvider.provider) {
-    throw new Error(`Missing provider`);
-  }
+  const { account, type, client } = payload;
 
-  const chainId = await getProviderChainId(signerOrProvider);
+  const chainId = BigInt(await client.getChainId());
 
-  const contract = new ethers.Contract(
-    getGelatoRelayERC2771Address({ chainId, type }, config),
-    USER_NONCE_ABI,
-    signerOrProvider
-  );
-  return (await contract.userNonce(account)) as bigint;
+  const publicClient = client.extend(publicActions);
+
+  const nonce = await publicClient.readContract({
+    abi: parseAbi(USER_NONCE_ABI),
+    address: getGelatoRelayERC2771Address(
+      { chainId, type },
+      config
+    ) as `0x${string}`,
+    functionName: "userNonce",
+    args: [account],
+  });
+
+  return nonce as bigint;
 };

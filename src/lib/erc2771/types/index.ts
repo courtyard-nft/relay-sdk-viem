@@ -66,7 +66,7 @@ export type SponsoredCallERC2771PayloadToSign = {
       type: string;
     }[];
   };
-  primaryType?: "SponsoredCallERC2771";
+  primaryType: "SponsoredCallERC2771";
   message: SafeRequestPayload<CallWithERC2771Struct>;
 };
 
@@ -82,7 +82,7 @@ export type CallWithSyncFeeERC2771PayloadToSign = {
       type: string;
     }[];
   };
-  primaryType?: "CallWithSyncFeeERC2771";
+  primaryType: "CallWithSyncFeeERC2771";
   message: SafeRequestPayload<CallWithERC2771Struct>;
 };
 
@@ -98,7 +98,7 @@ export type SponsoredCallConcurrentERC2771PayloadToSign = {
       type: string;
     }[];
   };
-  primaryType?: "SponsoredCallConcurrentERC2771";
+  primaryType: "SponsoredCallConcurrentERC2771";
   message: SafeRequestPayload<CallWithConcurrentERC2771Struct>;
 };
 
@@ -114,7 +114,7 @@ export type CallWithSyncFeeConcurrentERC2771PayloadToSign = {
       type: string;
     }[];
   };
-  primaryType?: "CallWithSyncFeeConcurrentERC2771";
+  primaryType: "CallWithSyncFeeConcurrentERC2771";
   message: SafeRequestPayload<CallWithConcurrentERC2771Struct>;
 };
 

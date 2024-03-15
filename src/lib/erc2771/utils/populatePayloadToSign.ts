@@ -1,3 +1,5 @@
+import { WalletClient } from "viem";
+
 import {
   CallWithConcurrentERC2771Request,
   CallWithERC2771Request,
@@ -6,10 +8,10 @@ import {
   PayloadToSign,
   SequentialPayloadToSign,
 } from "../types";
-import { Config, SignerOrProvider } from "../../types";
+import { Config } from "../../types";
 import {
   isConcurrentRequest,
-  isSigner,
+  isLocalSigner,
   populateOptionalUserParameters,
 } from "../../../utils";
 
@@ -23,7 +25,7 @@ export async function populatePayloadToSign(
     type:
       | ERC2771Type.ConcurrentCallWithSyncFee
       | ERC2771Type.ConcurrentSponsoredCall;
-    signerOrProvider?: SignerOrProvider;
+    client?: WalletClient;
   },
   config: Config
 ): Promise<ConcurrentPayloadToSign>;
@@ -32,7 +34,7 @@ export async function populatePayloadToSign(
   payload: {
     request: CallWithERC2771Request;
     type: ERC2771Type.CallWithSyncFee | ERC2771Type.SponsoredCall;
-    signerOrProvider?: SignerOrProvider;
+    client?: WalletClient;
   },
   config: Config
 ): Promise<SequentialPayloadToSign>;
@@ -41,11 +43,11 @@ export async function populatePayloadToSign(
   payload: {
     request: CallWithConcurrentERC2771Request | CallWithERC2771Request;
     type: ERC2771Type;
-    signerOrProvider?: SignerOrProvider;
+    client?: WalletClient;
   },
   config: Config
 ): Promise<PayloadToSign> {
-  const { request, signerOrProvider } = payload;
+  const { request, client } = payload;
   if (isConcurrentRequest(request)) {
     const type = payload.type as
       | ERC2771Type.ConcurrentCallWithSyncFee
@@ -54,7 +56,7 @@ export async function populatePayloadToSign(
       {
         request,
         type,
-        signerOrProvider,
+        client,
       },
       config
     );
@@ -62,14 +64,16 @@ export async function populatePayloadToSign(
     const struct = await mapRequestToStruct(request, parametersToOverride);
 
     const safeStruct = safeTransformStruct(struct);
+
     const typedData = getPayloadToSign(
       {
         struct: safeStruct,
         type,
-        isSigner: signerOrProvider ? isSigner(signerOrProvider) : undefined,
+        isSigner: client ? isLocalSigner(client) : undefined,
       },
       config
     );
+
     return {
       struct,
       typedData,
@@ -82,7 +86,7 @@ export async function populatePayloadToSign(
       {
         request,
         type,
-        signerOrProvider,
+        client,
       },
       config
     );
@@ -90,14 +94,16 @@ export async function populatePayloadToSign(
     const struct = await mapRequestToStruct(request, parametersToOverride);
 
     const safeStruct = safeTransformStruct(struct);
+
     const typedData = getPayloadToSign(
       {
         struct: safeStruct,
         type,
-        isSigner: signerOrProvider ? isSigner(signerOrProvider) : undefined,
+        isSigner: client ? isLocalSigner(client) : undefined,
       },
       config
     );
+
     return {
       struct,
       typedData,

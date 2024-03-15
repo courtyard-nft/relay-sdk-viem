@@ -1,6 +1,8 @@
+import { WalletClient } from "viem";
+
 import { isConcurrentRequest } from "../../../utils";
 import { isNetworkSupported } from "../../network";
-import { Config, SignerOrProvider } from "../../types";
+import { Config } from "../../types";
 import {
   CallWithERC2771Request,
   ERC2771Type,
@@ -15,7 +17,7 @@ export async function getDataToSignERC2771(
   payload: {
     request: CallWithERC2771Request;
     type: ERC2771Type.CallWithSyncFee | ERC2771Type.SponsoredCall;
-    signerOrProvider?: SignerOrProvider;
+    client?: WalletClient;
   },
   config: Config
 ): Promise<SequentialPayloadToSign>;
@@ -26,7 +28,7 @@ export async function getDataToSignERC2771(
     type:
       | ERC2771Type.ConcurrentCallWithSyncFee
       | ERC2771Type.ConcurrentSponsoredCall;
-    signerOrProvider?: SignerOrProvider;
+    client?: WalletClient;
   },
   config: Config
 ): Promise<ConcurrentPayloadToSign>;
@@ -35,7 +37,7 @@ export async function getDataToSignERC2771(
   payload: {
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request;
     type: ERC2771Type;
-    signerOrProvider?: SignerOrProvider;
+    client?: WalletClient;
   },
   config: Config
 ): Promise<PayloadToSign>;
@@ -44,12 +46,12 @@ export async function getDataToSignERC2771(
   payload: {
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request;
     type: ERC2771Type;
-    signerOrProvider?: SignerOrProvider;
+    client?: WalletClient;
   },
   config: Config
 ): Promise<PayloadToSign> {
   try {
-    const { request, signerOrProvider } = payload;
+    const { request, client } = payload;
 
     const { chainId } = request;
     const isSupported = await isNetworkSupported({ chainId }, config);
@@ -66,7 +68,7 @@ export async function getDataToSignERC2771(
         {
           request,
           type,
-          signerOrProvider,
+          client,
         },
         config
       );
@@ -81,7 +83,7 @@ export async function getDataToSignERC2771(
         | ERC2771Type.SponsoredCall;
 
       const { struct, typedData } = await populatePayloadToSign(
-        { request, type, signerOrProvider },
+        { request, type, client },
         config
       );
 

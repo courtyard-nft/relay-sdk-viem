@@ -1,4 +1,4 @@
-import { BytesLike, ethers } from "ethers";
+import { Hex, ByteArray } from "viem";
 
 export enum RelayCall {
   CallWithSyncFee,
@@ -29,8 +29,8 @@ export type RelayResponse = {
 export type EIP712Domain = {
   name: string;
   version: string;
-  chainId: string;
-  verifyingContract: string;
+  chainId: number;
+  verifyingContract: `0x${string}`;
 };
 
 export const EIP712_DOMAIN_TYPE_DATA = {
@@ -45,7 +45,7 @@ export const EIP712_DOMAIN_TYPE_DATA = {
 export type BaseRelayParams = {
   chainId: bigint;
   target: string;
-  data: BytesLike;
+  data: Hex | ByteArray;
 };
 
 export type BaseCallWithSyncFeeParams = {
@@ -77,5 +77,3 @@ export type SafeRequestPayload<T> = {
     ? SafeRequestPayload<T[K]>
     : T[K];
 };
-
-export type SignerOrProvider = ethers.BrowserProvider | ethers.Signer;

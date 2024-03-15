@@ -1,9 +1,5 @@
-import { ethers } from "ethers";
+import { WalletClient } from "viem";
 
-import { SignerOrProvider } from "../lib/types";
-
-export const isSigner = (
-  signerOrProvider: SignerOrProvider
-): signerOrProvider is ethers.Signer => {
-  return "signTransaction" in signerOrProvider;
+export const isLocalSigner = (client: WalletClient): boolean => {
+  return client?.account?.type === "local";
 };

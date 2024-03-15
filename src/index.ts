@@ -1,3 +1,5 @@
+import { WalletClient } from "viem";
+
 import * as library from "./lib";
 import { CallWithSyncFeeRequest } from "./lib/callWithSyncFee/types";
 import { SponsoredCallRequest } from "./lib/sponsoredCall/types";
@@ -16,7 +18,6 @@ import {
   Config,
   RelayRequestOptions,
   RelayResponse,
-  SignerOrProvider,
 } from "./lib/types";
 import {
   GELATO_RELAY_1BALANCE_ERC2771_ADDRESS,
@@ -46,7 +47,6 @@ export {
   CallWithSyncFeeConcurrentERC2771Request,
   CallWithConcurrentERC2771Request,
   Config,
-  SignerOrProvider,
   TaskState,
 };
 
@@ -135,14 +135,14 @@ export class GelatoRelay {
     request:
       | CallWithSyncFeeERC2771Request
       | CallWithSyncFeeConcurrentERC2771Request,
-    signerOrProvider: SignerOrProvider,
+    client: WalletClient,
     options?: RelayRequestOptions,
     sponsorApiKey?: string
   ): Promise<RelayResponse> => {
     const response = await library.relayWithCallWithSyncFeeERC2771(
       {
         request,
-        signerOrProvider,
+        client,
         sponsorApiKey,
         options,
       },
@@ -190,14 +190,14 @@ export class GelatoRelay {
    */
   sponsoredCallERC2771 = async (
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request,
-    signerOrProvider: SignerOrProvider,
+    client: WalletClient,
     sponsorApiKey: string,
     options?: RelayRequestOptions
   ): Promise<RelayResponse> => {
     const response = await library.relayWithSponsoredCallERC2771(
       {
         request,
-        signerOrProvider,
+        client,
         sponsorApiKey,
         options,
       },
@@ -220,13 +220,10 @@ export class GelatoRelay {
    */
   getSignatureDataERC2771 = (
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request,
-    signerOrProvider: SignerOrProvider,
+    client: WalletClient,
     type: ERC2771Type
   ): Promise<SignatureData> =>
-    library.getSignatureDataERC2771(
-      { request, signerOrProvider, type },
-      this.#config
-    );
+    library.getSignatureDataERC2771({ request, client, type }, this.#config);
 
   /**
    * @param {CallWithERC2771Request | CallWithConcurrentERC2771Request} request - Sequential ERC2771 or Concurrent ERC2771 request to be relayed by Gelato Executors
@@ -238,12 +235,9 @@ export class GelatoRelay {
   getDataToSignERC2771 = (
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request,
     type: ERC2771Type,
-    signerOrProvider?: SignerOrProvider
+    client?: WalletClient
   ): Promise<PayloadToSign> =>
-    library.getDataToSignERC2771(
-      { request, signerOrProvider, type },
-      this.#config
-    );
+    library.getDataToSignERC2771({ request, client, type }, this.#config);
 
   /**
    * @param {SignatureData["struct"]} struct - Struct that can be obtained from getSignatureDataERC2771

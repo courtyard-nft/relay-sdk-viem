@@ -8,7 +8,6 @@ export * from "./post";
 export * from "./isSigner";
 export * from "./relayAddress";
 export * from "./isZkSync";
-export * from "./getProviderChainId";
 export * from "./axios";
 export * from "./isConcurrentStruct";
 export * from "./isConcurrentRequest";

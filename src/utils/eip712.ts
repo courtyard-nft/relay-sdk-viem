@@ -16,7 +16,7 @@ export const getEIP712Domain = (
       return {
         name: "GelatoRelayERC2771",
         version: "1",
-        chainId: chainId.toString(),
+        chainId: Number(chainId),
         verifyingContract: getGelatoRelayERC2771Address(
           { chainId, type },
           config
@@ -26,7 +26,7 @@ export const getEIP712Domain = (
       return {
         name: "GelatoRelay1BalanceERC2771",
         version: "1",
-        chainId: chainId.toString(),
+        chainId: Number(chainId),
         verifyingContract: getGelatoRelayERC2771Address(
           { chainId, type },
           config
@@ -36,7 +36,7 @@ export const getEIP712Domain = (
       return {
         name: "GelatoRelayConcurrentERC2771",
         version: "1",
-        chainId: chainId.toString(),
+        chainId: Number(chainId),
         verifyingContract: getGelatoRelayERC2771Address(
           { chainId, type },
           config
@@ -46,7 +46,7 @@ export const getEIP712Domain = (
       return {
         name: "GelatoRelay1BalanceConcurrentERC2771",
         version: "1",
-        chainId: chainId.toString(),
+        chainId: Number(chainId),
         verifyingContract: getGelatoRelayERC2771Address(
           { chainId, type },
           config

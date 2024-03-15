@@ -1,3 +1,5 @@
+import { WalletClient } from "viem";
+
 import { post } from "../../../utils";
 import {
   ApiKey,
@@ -8,7 +10,6 @@ import {
   RelayCall,
   RelayRequestOptions,
   RelayResponse,
-  SignerOrProvider,
 } from "../../types";
 import {
   CallWithConcurrentERC2771Struct,
@@ -26,14 +27,14 @@ export const relayWithCallWithSyncFeeERC2771 = async (
     request:
       | CallWithSyncFeeERC2771Request
       | CallWithSyncFeeConcurrentERC2771Request;
-    signerOrProvider: SignerOrProvider;
+    client: WalletClient;
     sponsorApiKey?: string;
     options?: RelayRequestOptions;
   },
   config: Config
 ): Promise<RelayResponse> => {
   try {
-    const { request, signerOrProvider, options, sponsorApiKey } = payload;
+    const { request, client, options, sponsorApiKey } = payload;
 
     if (request.isConcurrent) {
       const isConcurrent = true;
@@ -41,7 +42,7 @@ export const relayWithCallWithSyncFeeERC2771 = async (
       const type = ERC2771Type.ConcurrentCallWithSyncFee;
 
       const { struct, signature } = await getSignatureDataERC2771(
-        { request, signerOrProvider, type },
+        { request, client, type },
         config
       );
 
@@ -77,7 +78,7 @@ export const relayWithCallWithSyncFeeERC2771 = async (
       const type = ERC2771Type.CallWithSyncFee;
 
       const { struct, signature } = await getSignatureDataERC2771(
-        { request, signerOrProvider, type },
+        { request, client, type },
         config
       );
 

@@ -1,4 +1,4 @@
-import { getAddress } from "ethers";
+import { getAddress } from "viem";
 
 import { post } from "../../utils";
 import { isNetworkSupported } from "../network";
