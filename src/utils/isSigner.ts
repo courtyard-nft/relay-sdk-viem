@@ -1,5 +1,5 @@
-import { WalletClient } from "viem";
+import { PublicOrWalletClient } from "../lib/types";
 
-export const isLocalSigner = (client: WalletClient): boolean => {
-  return client?.account?.type === "local";
+export const isWalletClient = (client: PublicOrWalletClient): boolean => {
+  return client.type === "walletClient";
 };

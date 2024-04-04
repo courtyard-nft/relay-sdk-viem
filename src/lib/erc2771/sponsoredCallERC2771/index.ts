@@ -1,5 +1,3 @@
-import { WalletClient } from "viem";
-
 import { isConcurrentRequest, post } from "../../../utils";
 import {
   ApiKey,
@@ -8,6 +6,7 @@ import {
   RelayCall,
   RelayRequestOptions,
   RelayResponse,
+  PublicOrWalletClient,
 } from "../../types";
 import {
   CallWithConcurrentERC2771Request,
@@ -23,7 +22,7 @@ import { safeTransformStruct } from "../utils/safeTransformStruct.js";
 export const relayWithSponsoredCallERC2771 = async (
   payload: {
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request;
-    client: WalletClient;
+    client: PublicOrWalletClient;
     sponsorApiKey: string;
     options?: RelayRequestOptions;
   },
@@ -35,7 +34,7 @@ export const relayWithSponsoredCallERC2771 = async (
 const sponsoredCallERC2771 = async (
   payload: {
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request;
-    client: WalletClient;
+    client: PublicOrWalletClient;
     sponsorApiKey: string;
     options?: RelayRequestOptions;
   },

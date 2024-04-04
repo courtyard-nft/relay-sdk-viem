@@ -1,5 +1,3 @@
-import { WalletClient } from "viem";
-
 import { post } from "../../../utils";
 import {
   ApiKey,
@@ -10,6 +8,7 @@ import {
   RelayCall,
   RelayRequestOptions,
   RelayResponse,
+  PublicOrWalletClient,
 } from "../../types";
 import {
   CallWithConcurrentERC2771Struct,
@@ -27,7 +26,7 @@ export const relayWithCallWithSyncFeeERC2771 = async (
     request:
       | CallWithSyncFeeERC2771Request
       | CallWithSyncFeeConcurrentERC2771Request;
-    client: WalletClient;
+    client: PublicOrWalletClient;
     sponsorApiKey?: string;
     options?: RelayRequestOptions;
   },

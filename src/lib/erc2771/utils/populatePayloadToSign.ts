@@ -1,5 +1,3 @@
-import { WalletClient } from "viem";
-
 import {
   CallWithConcurrentERC2771Request,
   CallWithERC2771Request,
@@ -8,10 +6,10 @@ import {
   PayloadToSign,
   SequentialPayloadToSign,
 } from "../types";
-import { Config } from "../../types";
+import { Config, PublicOrWalletClient } from "../../types";
 import {
   isConcurrentRequest,
-  isLocalSigner,
+  isWalletClient,
   populateOptionalUserParameters,
 } from "../../../utils";
 
@@ -25,7 +23,7 @@ export async function populatePayloadToSign(
     type:
       | ERC2771Type.ConcurrentCallWithSyncFee
       | ERC2771Type.ConcurrentSponsoredCall;
-    client?: WalletClient;
+    client?: PublicOrWalletClient;
   },
   config: Config
 ): Promise<ConcurrentPayloadToSign>;
@@ -34,7 +32,7 @@ export async function populatePayloadToSign(
   payload: {
     request: CallWithERC2771Request;
     type: ERC2771Type.CallWithSyncFee | ERC2771Type.SponsoredCall;
-    client?: WalletClient;
+    client?: PublicOrWalletClient;
   },
   config: Config
 ): Promise<SequentialPayloadToSign>;
@@ -43,7 +41,7 @@ export async function populatePayloadToSign(
   payload: {
     request: CallWithConcurrentERC2771Request | CallWithERC2771Request;
     type: ERC2771Type;
-    client?: WalletClient;
+    client?: PublicOrWalletClient;
   },
   config: Config
 ): Promise<PayloadToSign> {
@@ -69,7 +67,7 @@ export async function populatePayloadToSign(
       {
         struct: safeStruct,
         type,
-        isSigner: client ? isLocalSigner(client) : undefined,
+        isSigner: client ? isWalletClient(client) : undefined,
       },
       config
     );
@@ -99,7 +97,7 @@ export async function populatePayloadToSign(
       {
         struct: safeStruct,
         type,
-        isSigner: client ? isLocalSigner(client) : undefined,
+        isSigner: client ? isWalletClient(client) : undefined,
       },
       config
     );

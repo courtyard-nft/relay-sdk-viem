@@ -1,5 +1,3 @@
-import { WalletClient } from "viem";
-
 import * as library from "./lib";
 import { CallWithSyncFeeRequest } from "./lib/callWithSyncFee/types";
 import { SponsoredCallRequest } from "./lib/sponsoredCall/types";
@@ -18,6 +16,7 @@ import {
   Config,
   RelayRequestOptions,
   RelayResponse,
+  PublicOrWalletClient,
 } from "./lib/types";
 import {
   GELATO_RELAY_1BALANCE_ERC2771_ADDRESS,
@@ -135,7 +134,7 @@ export class GelatoRelay {
     request:
       | CallWithSyncFeeERC2771Request
       | CallWithSyncFeeConcurrentERC2771Request,
-    client: WalletClient,
+    client: PublicOrWalletClient,
     options?: RelayRequestOptions,
     sponsorApiKey?: string
   ): Promise<RelayResponse> => {
@@ -190,7 +189,7 @@ export class GelatoRelay {
    */
   sponsoredCallERC2771 = async (
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request,
-    client: WalletClient,
+    client: PublicOrWalletClient,
     sponsorApiKey: string,
     options?: RelayRequestOptions
   ): Promise<RelayResponse> => {
@@ -220,7 +219,7 @@ export class GelatoRelay {
    */
   getSignatureDataERC2771 = (
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request,
-    client: WalletClient,
+    client: PublicOrWalletClient,
     type: ERC2771Type
   ): Promise<SignatureData> =>
     library.getSignatureDataERC2771({ request, client, type }, this.#config);
@@ -235,7 +234,7 @@ export class GelatoRelay {
   getDataToSignERC2771 = (
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request,
     type: ERC2771Type,
-    client?: WalletClient
+    client?: PublicOrWalletClient
   ): Promise<PayloadToSign> =>
     library.getDataToSignERC2771({ request, client, type }, this.#config);
 

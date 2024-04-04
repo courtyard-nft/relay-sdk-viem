@@ -1,5 +1,4 @@
-import { WalletClient } from "viem";
-
+import { PublicOrWalletClient } from "../lib/types";
 import {
   CallWithSyncFeeERC2771PayloadToSign,
   SponsoredCallERC2771PayloadToSign,
@@ -7,17 +6,19 @@ import {
   CallWithSyncFeeConcurrentERC2771PayloadToSign,
 } from "../lib/erc2771/types";
 
+import { isWalletClient } from "./isSigner";
+
 export const signTypedDataV4 = async (
-  client: WalletClient,
+  client: PublicOrWalletClient,
   payload:
     | SponsoredCallERC2771PayloadToSign
     | CallWithSyncFeeERC2771PayloadToSign
     | SponsoredCallConcurrentERC2771PayloadToSign
     | CallWithSyncFeeConcurrentERC2771PayloadToSign
 ): Promise<string> => {
-  if (!client.account) {
+  if (!isWalletClient(client) || !client.account) {
     throw new Error(
-      "Account not found on client. Please, provide an account during the client creation."
+      "The provided client is not a wallet client, or account not found on the client. Please, provide an account during the client creation."
     );
   }
 

@@ -1,5 +1,3 @@
-import { WalletClient } from "viem";
-
 import { DEFAULT_DEADLINE_GAP } from "../constants";
 import {
   CallWithConcurrentERC2771Request,
@@ -8,7 +6,7 @@ import {
   CallWithERC2771RequestOptionalParameters,
   ERC2771Type,
 } from "../lib/erc2771/types";
-import { Config } from "../lib/types";
+import { Config, PublicOrWalletClient } from "../lib/types";
 
 import { calculateDeadline } from "./calculateDeadline";
 import { getUserNonce } from "./getUserNonce";
@@ -21,7 +19,7 @@ export async function populateOptionalUserParameters(
     type:
       | ERC2771Type.ConcurrentCallWithSyncFee
       | ERC2771Type.ConcurrentSponsoredCall;
-    client?: WalletClient;
+    client?: PublicOrWalletClient;
   },
 
   config: Config
@@ -31,7 +29,7 @@ export async function populateOptionalUserParameters(
   payload: {
     request: CallWithERC2771Request;
     type: ERC2771Type.CallWithSyncFee | ERC2771Type.SponsoredCall;
-    client?: WalletClient;
+    client?: PublicOrWalletClient;
   },
 
   config: Config
@@ -41,7 +39,7 @@ export async function populateOptionalUserParameters(
   payload: {
     request: CallWithConcurrentERC2771Request | CallWithERC2771Request;
     type: ERC2771Type;
-    client?: WalletClient;
+    client?: PublicOrWalletClient;
   },
 
   config: Config

@@ -1,7 +1,5 @@
-import { WalletClient } from "viem";
-
 import { isConcurrentRequest, signTypedDataV4 } from "../../../utils";
-import { Config } from "../../types";
+import { Config, PublicOrWalletClient } from "../../types";
 import {
   SignatureData,
   CallWithERC2771Request,
@@ -15,7 +13,7 @@ import { getDataToSignERC2771 } from "../getDataToSignERC2771/index.js";
 export async function getSignatureDataERC2771(
   payload: {
     request: CallWithERC2771Request;
-    client: WalletClient;
+    client: PublicOrWalletClient;
     type: ERC2771Type.CallWithSyncFee | ERC2771Type.SponsoredCall;
   },
   config: Config
@@ -24,7 +22,7 @@ export async function getSignatureDataERC2771(
 export async function getSignatureDataERC2771(
   payload: {
     request: CallWithConcurrentERC2771Request;
-    client: WalletClient;
+    client: PublicOrWalletClient;
     type:
       | ERC2771Type.ConcurrentCallWithSyncFee
       | ERC2771Type.ConcurrentSponsoredCall;
@@ -35,7 +33,7 @@ export async function getSignatureDataERC2771(
 export async function getSignatureDataERC2771(
   payload: {
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request;
-    client: WalletClient;
+    client: PublicOrWalletClient;
     type: ERC2771Type;
   },
   config: Config
@@ -44,7 +42,7 @@ export async function getSignatureDataERC2771(
 export async function getSignatureDataERC2771(
   payload: {
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request;
-    client: WalletClient;
+    client: PublicOrWalletClient;
     type: ERC2771Type;
   },
   config: Config

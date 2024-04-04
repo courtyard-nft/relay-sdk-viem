@@ -1,8 +1,6 @@
-import { WalletClient } from "viem";
-
 import { isConcurrentRequest } from "../../../utils";
 import { isNetworkSupported } from "../../network";
-import { Config } from "../../types";
+import { Config, PublicOrWalletClient } from "../../types";
 import {
   CallWithERC2771Request,
   ERC2771Type,
@@ -17,7 +15,7 @@ export async function getDataToSignERC2771(
   payload: {
     request: CallWithERC2771Request;
     type: ERC2771Type.CallWithSyncFee | ERC2771Type.SponsoredCall;
-    client?: WalletClient;
+    client?: PublicOrWalletClient;
   },
   config: Config
 ): Promise<SequentialPayloadToSign>;
@@ -28,7 +26,7 @@ export async function getDataToSignERC2771(
     type:
       | ERC2771Type.ConcurrentCallWithSyncFee
       | ERC2771Type.ConcurrentSponsoredCall;
-    client?: WalletClient;
+    client?: PublicOrWalletClient;
   },
   config: Config
 ): Promise<ConcurrentPayloadToSign>;
@@ -37,7 +35,7 @@ export async function getDataToSignERC2771(
   payload: {
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request;
     type: ERC2771Type;
-    client?: WalletClient;
+    client?: PublicOrWalletClient;
   },
   config: Config
 ): Promise<PayloadToSign>;
@@ -46,7 +44,7 @@ export async function getDataToSignERC2771(
   payload: {
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request;
     type: ERC2771Type;
-    client?: WalletClient;
+    client?: PublicOrWalletClient;
   },
   config: Config
 ): Promise<PayloadToSign> {
