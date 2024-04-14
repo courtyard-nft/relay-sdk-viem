@@ -125,7 +125,7 @@ export class GelatoRelay {
 
   /**
    * @param {CallWithSyncFeeERC2771Request | CallWithSyncFeeConcurrentERC2771Request} request - Call with sync fee: Sequential ERC2771 or Concurrent ERC2771 request to be relayed by Gelato Executors
-   * @param {WalletClient} client - walletClient to sign the payload
+   * @param {PublicOrWalletClient} client - Public or Wallet Client
    * @param {RelayRequestOptions} [options] - Optional Relay configuration
    * @param {string} [sponsorApiKey] Optional Sponsor API key to be used for the call
    * @returns {Promise<RelayResponse>} Response object with taskId parameter
@@ -182,7 +182,7 @@ export class GelatoRelay {
 
   /**
    * @param {CallWithERC2771Request | CallWithConcurrentERC2771Request} request - Sponsored: Sequential ERC2771 or Concurrent ERC2771 request to be relayed by Gelato Executors
-   * @param {WalletClient} client - walletClient to sign the payload
+   * @param {PublicOrWalletClient} client - Public or Wallet Client
    * @param {string} sponsorApiKey - Sponsor API key
    * @param {RelayRequestOptions} [options] - Optional Relay configuration
    * @returns {Promise<RelayResponse>} Response object with taskId parameter
@@ -213,7 +213,7 @@ export class GelatoRelay {
 
   /**
    * @param {CallWithERC2771Request | CallWithConcurrentERC2771Request} request - Sequential ERC2771 or Concurrent ERC2771 request to be relayed by Gelato Executors
-   * @param {WalletClient} client - walletClient to sign the payload
+   * @param {PublicOrWalletClient} client - Public or Wallet Client
    * @param {ERC2771Type} type - ERC2771Type.CallWithSyncFee or ERC2771Type.SponsoredCall
    * @returns {Promise<SignatureData>} Response object with struct and signature
    *
@@ -227,7 +227,7 @@ export class GelatoRelay {
 
   /**
    * @param {CallWithERC2771Request | CallWithConcurrentERC2771Request} request - Sequential ERC2771 or Concurrent ERC2771 request to be relayed by Gelato Executors
-   * @param {WalletClient} client - optional walletClient to sign the payload
+   * @param {PublicOrWalletClient} [client] - Optional Public or Wallet Client
    * @param {ERC2771Type} type - ERC2771Type.CallWithSyncFee or ERC2771Type.SponsoredCall
    * @returns {Promise<PayloadToSign>} Response object with struct and typed data
    *

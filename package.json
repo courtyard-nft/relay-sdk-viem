@@ -1,6 +1,6 @@
 {
   "name": "@gelatonetwork/relay-sdk-viem",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "SDK to integrate with Gelato Relay with viem",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,6 +38,7 @@
     "typescript": "5.0.4"
   },
   "dependencies": {
+    "@changesets/cli": "^2.27.1",
     "axios": "0.27.2",
     "isomorphic-ws": "^5.0.0",
     "viem": "2.9.15",

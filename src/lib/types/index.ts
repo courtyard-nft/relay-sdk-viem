@@ -1,4 +1,4 @@
-import { Hex, WalletClient, PublicClient } from "viem";
+import { Hex, WalletClient, PublicClient, Address } from "viem";
 
 export enum RelayCall {
   CallWithSyncFee,
@@ -30,7 +30,7 @@ export type EIP712Domain = {
   name: string;
   version: string;
   chainId: number;
-  verifyingContract: `0x${string}`;
+  verifyingContract: Address;
 };
 
 export const EIP712_DOMAIN_TYPE_DATA = {

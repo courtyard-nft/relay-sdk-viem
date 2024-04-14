@@ -16,7 +16,7 @@ export const signTypedDataV4 = async (
 ): Promise<string> => {
   if (!client.account) {
     throw new Error(
-      "The provided client is not a wallet client, or account not found on the client. Please, provide an account during the client creation."
+      "The provided client is not a wallet client, or account not found on the client. Please provide an account during the client creation."
     );
   }
 
