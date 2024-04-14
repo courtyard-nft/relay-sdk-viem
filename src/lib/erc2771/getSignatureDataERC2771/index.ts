@@ -1,5 +1,5 @@
 import { isConcurrentRequest, signTypedDataV4 } from "../../../utils";
-import { Config, SignerOrProvider } from "../../types";
+import { Config, PublicOrWalletClient } from "../../types";
 import {
   SignatureData,
   CallWithERC2771Request,
@@ -13,7 +13,7 @@ import { getDataToSignERC2771 } from "../getDataToSignERC2771/index.js";
 export async function getSignatureDataERC2771(
   payload: {
     request: CallWithERC2771Request;
-    signerOrProvider: SignerOrProvider;
+    client: PublicOrWalletClient;
     type: ERC2771Type.CallWithSyncFee | ERC2771Type.SponsoredCall;
   },
   config: Config
@@ -22,7 +22,7 @@ export async function getSignatureDataERC2771(
 export async function getSignatureDataERC2771(
   payload: {
     request: CallWithConcurrentERC2771Request;
-    signerOrProvider: SignerOrProvider;
+    client: PublicOrWalletClient;
     type:
       | ERC2771Type.ConcurrentCallWithSyncFee
       | ERC2771Type.ConcurrentSponsoredCall;
@@ -33,7 +33,7 @@ export async function getSignatureDataERC2771(
 export async function getSignatureDataERC2771(
   payload: {
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request;
-    signerOrProvider: SignerOrProvider;
+    client: PublicOrWalletClient;
     type: ERC2771Type;
   },
   config: Config
@@ -42,13 +42,13 @@ export async function getSignatureDataERC2771(
 export async function getSignatureDataERC2771(
   payload: {
     request: CallWithERC2771Request | CallWithConcurrentERC2771Request;
-    signerOrProvider: SignerOrProvider;
+    client: PublicOrWalletClient;
     type: ERC2771Type;
   },
   config: Config
 ): Promise<SignatureData> {
   try {
-    const { request, signerOrProvider } = payload;
+    const { request, client } = payload;
 
     if (isConcurrentRequest(request)) {
       const type = payload.type as
@@ -58,17 +58,13 @@ export async function getSignatureDataERC2771(
       const { struct, typedData } = await getDataToSignERC2771(
         {
           request,
-          signerOrProvider,
+          client,
           type,
         },
         config
       );
 
-      const signature = await signTypedDataV4(
-        signerOrProvider,
-        request.user as string,
-        typedData
-      );
+      const signature = await signTypedDataV4(client, typedData);
 
       return {
         struct,
@@ -82,17 +78,13 @@ export async function getSignatureDataERC2771(
       const { struct, typedData } = await getDataToSignERC2771(
         {
           request,
-          signerOrProvider,
+          client,
           type,
         },
         config
       );
 
-      const signature = await signTypedDataV4(
-        signerOrProvider,
-        request.user as string,
-        typedData
-      );
+      const signature = await signTypedDataV4(client, typedData);
 
       return {
         struct,

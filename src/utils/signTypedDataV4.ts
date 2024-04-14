@@ -1,38 +1,32 @@
-import { SIGN_TYPED_DATA_V4 } from "../constants";
+import { PublicOrWalletClient } from "../lib/types";
 import {
   CallWithSyncFeeERC2771PayloadToSign,
   SponsoredCallERC2771PayloadToSign,
   SponsoredCallConcurrentERC2771PayloadToSign,
   CallWithSyncFeeConcurrentERC2771PayloadToSign,
 } from "../lib/erc2771/types";
-import { SignerOrProvider } from "../lib/types";
-
-import { isSigner } from "./isSigner";
 
 export const signTypedDataV4 = async (
-  signerOrProvider: SignerOrProvider,
-  address: string,
+  client: PublicOrWalletClient,
   payload:
     | SponsoredCallERC2771PayloadToSign
     | CallWithSyncFeeERC2771PayloadToSign
     | SponsoredCallConcurrentERC2771PayloadToSign
     | CallWithSyncFeeConcurrentERC2771PayloadToSign
 ): Promise<string> => {
-  if (isSigner(signerOrProvider)) {
-    return await signerOrProvider.signTypedData(
-      payload.domain,
-      payload.types,
-      payload.message
+  if (!client.account) {
+    throw new Error(
+      "The provided client is not a wallet client, or account not found on the client. Please provide an account during the client creation."
     );
   }
-  // Magic Connect accepts payload as an object
-  if ((signerOrProvider.provider as unknown as { isMagic: boolean }).isMagic) {
-    return await signerOrProvider.send(SIGN_TYPED_DATA_V4, [address, payload]);
-  }
-  const signature = await signerOrProvider.send(SIGN_TYPED_DATA_V4, [
-    address,
-    JSON.stringify(payload),
-  ]);
+
+  const signature = await client.signTypedData({
+    account: client.account,
+    domain: payload.domain,
+    types: payload.types,
+    message: payload.message,
+    primaryType: payload.primaryType,
+  });
 
   // Support both versions of `eth_sign` responses
   return signature.replace(/00$/, "1b").replace(/01$/, "1c");

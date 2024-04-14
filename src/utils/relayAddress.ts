@@ -1,4 +1,4 @@
-import { getAddress } from "ethers";
+import { getAddress } from "viem";
 
 import { ERC2771Type } from "../lib/erc2771/types";
 import { Config } from "../lib/types";
@@ -11,7 +11,7 @@ export const getGelatoRelayERC2771Address = (
     type: ERC2771Type;
   },
   config: Config
-): string => {
+): `0x${string}` => {
   const { chainId, type } = payload;
   switch (type) {
     case ERC2771Type.CallWithSyncFee:

@@ -6,13 +6,12 @@ import {
   CallWithERC2771RequestOptionalParameters,
   ERC2771Type,
 } from "../lib/erc2771/types";
-import { Config, SignerOrProvider } from "../lib/types";
+import { Config, PublicOrWalletClient } from "../lib/types";
 
 import { calculateDeadline } from "./calculateDeadline";
 import { getUserNonce } from "./getUserNonce";
 import { isConcurrentRequest } from "./isConcurrentRequest";
 import { generateSalt } from "./generateSalt";
-import { getProviderChainId } from "./getProviderChainId";
 
 export async function populateOptionalUserParameters(
   payload: {
@@ -20,7 +19,7 @@ export async function populateOptionalUserParameters(
     type:
       | ERC2771Type.ConcurrentCallWithSyncFee
       | ERC2771Type.ConcurrentSponsoredCall;
-    signerOrProvider?: SignerOrProvider;
+    client?: PublicOrWalletClient;
   },
 
   config: Config
@@ -30,7 +29,7 @@ export async function populateOptionalUserParameters(
   payload: {
     request: CallWithERC2771Request;
     type: ERC2771Type.CallWithSyncFee | ERC2771Type.SponsoredCall;
-    signerOrProvider?: SignerOrProvider;
+    client?: PublicOrWalletClient;
   },
 
   config: Config
@@ -40,7 +39,7 @@ export async function populateOptionalUserParameters(
   payload: {
     request: CallWithConcurrentERC2771Request | CallWithERC2771Request;
     type: ERC2771Type;
-    signerOrProvider?: SignerOrProvider;
+    client?: PublicOrWalletClient;
   },
 
   config: Config
@@ -63,7 +62,7 @@ export async function populateOptionalUserParameters(
     }
     return parametersToOverride;
   } else {
-    const { type, signerOrProvider, request } = payload;
+    const { type, client, request } = payload;
     const parametersToOverride: Partial<CallWithERC2771RequestOptionalParameters> =
       {};
     if (!request.userDeadline) {
@@ -71,24 +70,25 @@ export async function populateOptionalUserParameters(
         calculateDeadline(DEFAULT_DEADLINE_GAP);
     }
     if (request.userNonce === undefined) {
-      if (!signerOrProvider || !signerOrProvider.provider) {
-        throw new Error("Missing provider.");
+      if (!client) {
+        throw new Error("Missing client.");
       }
-      const providerChainId = await getProviderChainId(signerOrProvider);
-      if (request.chainId !== providerChainId) {
+      const chainId = BigInt(await client.getChainId());
+      if (request.chainId !== chainId) {
         throw new Error(
-          `Request and provider chain id mismatch. Request: [${request.chainId.toString()}], provider: [${providerChainId.toString()}]`
+          `Request and provider chain id mismatch. Request: [${request.chainId.toString()}], provider: [${chainId.toString()}]`
         );
       }
       parametersToOverride.userNonce = await getUserNonce(
         {
           account: request.user as string,
           type,
-          signerOrProvider,
+          client,
         },
         config
       );
     }
+
     return parametersToOverride;
   }
 }
