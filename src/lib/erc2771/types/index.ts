@@ -1,3 +1,5 @@
+import { Address } from "viem";
+
 import {
   BaseCallWithSyncFeeParams,
   BaseRelayParams,
@@ -124,13 +126,13 @@ export type CallWithConcurrentERC2771Struct = BaseRelayParams &
   ConcurrentERC2771UserParams;
 
 export type ERC2771UserParams = {
-  user: string;
+  user: Address;
   userNonce: bigint;
   userDeadline: number;
 };
 
 export type ConcurrentERC2771UserParams = {
-  user: string;
+  user: Address;
   userSalt: string;
   userDeadline: number;
 };

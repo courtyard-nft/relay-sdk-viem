@@ -46,6 +46,7 @@ export {
   CallWithSyncFeeConcurrentERC2771Request,
   CallWithConcurrentERC2771Request,
   Config,
+  PublicOrWalletClient,
   TaskState,
 };
 

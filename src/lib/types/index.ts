@@ -1,4 +1,4 @@
-import { Hex, ByteArray, WalletClient, PublicClient } from "viem";
+import { Hex, WalletClient, PublicClient } from "viem";
 
 export enum RelayCall {
   CallWithSyncFee,
@@ -45,7 +45,7 @@ export const EIP712_DOMAIN_TYPE_DATA = {
 export type BaseRelayParams = {
   chainId: bigint;
   target: string;
-  data: Hex | ByteArray;
+  data: Hex;
 };
 
 export type BaseCallWithSyncFeeParams = {
