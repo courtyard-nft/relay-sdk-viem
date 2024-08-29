@@ -1,5 +1,18 @@
 # @gelatonetwork/relay-sdk-viem
 
+## 1.1.0
+
+### Minor Changes
+
+- chore: uses viem@2.20.1
+- chore: uses viem@2.20.1
+
+## 1.1.0-alpha.0
+
+### Minor Changes
+
+- chore: uses viem@2.20.1
+
 ## 1.0.1
 
 ### Patch Changes
