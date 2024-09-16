@@ -1,5 +1,18 @@
 # @gelatonetwork/relay-sdk-viem
 
+## 1.2.0
+
+### Minor Changes
+
+- Uses the most recent version of axios
+- Uses the most recent version of axios
+
+## 1.2.0-alpha.0
+
+### Minor Changes
+
+- Uses the most recent version of axios
+
 ## 1.1.0
 
 ### Minor Changes
