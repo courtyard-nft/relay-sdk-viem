@@ -1,4 +1,5 @@
 import { Hex, WalletClient, PublicClient, Address } from "viem";
+import { ClientOptions } from "isomorphic-ws";
 
 export enum RelayCall {
   CallWithSyncFee,
@@ -56,6 +57,7 @@ export type BaseCallWithSyncFeeParams = {
 export type Config = {
   url: string;
   websocketUrl: string;
+  websocketConfig: ClientOptions;
   contract: {
     relayERC2771: string;
     relay1BalanceERC2771: string;

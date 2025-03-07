@@ -1,4 +1,9 @@
-import WebSocket from "isomorphic-ws";
+import {
+  WebSocket,
+  ClientOptions,
+  MessageEvent,
+  ErrorEvent,
+} from "isomorphic-ws";
 
 import { TransactionStatusResponse } from "../lib/status/types/index.js";
 
@@ -12,6 +17,7 @@ import {
 
 export class WebsocketHandler {
   readonly #url: string;
+  readonly #config: ClientOptions;
   readonly #subscriptions: Set<string> = new Set();
   #updateHandlers: ((taskStatus: TransactionStatusResponse) => void)[] = [];
   #errorHandlers: ((error: Error) => void)[] = [];
@@ -19,8 +25,9 @@ export class WebsocketHandler {
   readonly #reconnectIntervalMillis = 1000;
   readonly #connectTimeoutMillis = 10000;
 
-  constructor(url: string) {
+  constructor(url: string, config: ClientOptions) {
     this.#url = `${url}/tasks/ws/status`;
+    this.#config = config;
   }
 
   public onUpdate(
@@ -106,7 +113,7 @@ export class WebsocketHandler {
       return;
     }
 
-    this.#websocket = new WebSocket(this.#url);
+    this.#websocket = new WebSocket(this.#url, this.#config);
 
     this.#websocket.onopen = async () => {
       this.#subscriptions.forEach((taskId) => {
@@ -123,11 +130,11 @@ export class WebsocketHandler {
       }, this.#reconnectIntervalMillis);
     };
 
-    this.#websocket.onerror = (error: WebSocket.ErrorEvent) => {
-      this._handleError(error);
+    this.#websocket.onerror = (event: ErrorEvent) => {
+      this._handleError(event.error);
     };
 
-    this.#websocket.onmessage = async (data: WebSocket.MessageEvent) => {
+    this.#websocket.onmessage = async (data: MessageEvent) => {
       const message = JSON.parse(
         data.data.toString()
       ) as WebsocketMessage<unknown>;
@@ -164,7 +171,7 @@ export class WebsocketHandler {
 
   private async _sendWebsocketMessage(message: unknown): Promise<void> {
     const isConnected = await this._ensureIsConnected();
-    if (isConnected) {
+    if (isConnected && this.#websocket) {
       this.#websocket.send(JSON.stringify(message));
     }
   }
