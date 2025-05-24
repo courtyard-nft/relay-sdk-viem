@@ -4,6 +4,18 @@
   "description": "SDK to integrate with Gelato Relay with viem",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gelatonetwork/relay-sdk-viem.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gelatonetwork/relay-sdk-viem/issues"
+  },
+  "homepage": "https://github.com/gelatonetwork/relay-sdk-viem#readme",
   "files": [
     "dist/**/*"
   ],

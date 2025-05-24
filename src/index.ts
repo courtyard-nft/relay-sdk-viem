@@ -1,3 +1,4 @@
+import "dotenv/config";
 import * as library from "./lib";
 import { CallWithSyncFeeRequest } from "./lib/callWithSyncFee/types";
 import { SponsoredCallRequest } from "./lib/sponsoredCall/types";
@@ -75,6 +76,9 @@ export class GelatoRelay {
 
   private _getConfiguration = (config?: Partial<Config>): Config => {
     const url = config?.url ?? GELATO_RELAY_URL;
+    if (!url) {
+      throw new Error("GELATO_RELAY_URL is not set");
+    }
     return {
       url,
       websocketUrl: url.replace(/^http/, "ws"),
