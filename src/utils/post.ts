@@ -5,7 +5,8 @@ import { getHttpErrorMessage } from "./getHttpErrorMessage";
 
 export const post = async <Request, Response>(
   payload: { relayCall: RelayCall; request: SafeRequestPayload<Request> },
-  config: Config
+  config: Config,
+  jwtToken?: string
 ): Promise<Response> => {
   try {
     const { relayCall, request } = payload;
@@ -32,7 +33,14 @@ export const post = async <Request, Response>(
         return _exhaustiveCheck;
       }
     }
-    return (await axiosInstance.post(path, request)).data;
+
+    // Prepare headers
+    const headers: Record<string, string> = {};
+    if (jwtToken) {
+      headers.Authorization = `Bearer ${jwtToken}`;
+    }
+
+    return (await axiosInstance.post(path, request, { headers })).data;
   } catch (error) {
     throw new Error(getHttpErrorMessage(error));
   }

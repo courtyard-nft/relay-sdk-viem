@@ -23,6 +23,10 @@ export type ApiKey = {
   sponsorApiKey: string;
 };
 
+export type JwtToken = {
+  jwtToken: string;
+};
+
 export type RelayResponse = {
   taskId: string;
 };

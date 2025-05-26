@@ -1,6 +1,7 @@
 import { isConcurrentStruct, post } from "../../../utils";
 import { isNetworkSupported } from "../../network";
 import {
+  JwtToken,
   BaseCallWithSyncFeeParams,
   ConcurrencyOptions,
   Config,
@@ -20,12 +21,13 @@ export const callWithSyncFeeERC2771WithSignature = async (
     struct: CallWithERC2771Struct | CallWithConcurrentERC2771Struct;
     syncFeeParams: BaseCallWithSyncFeeParams;
     signature: string;
+    jwtToken: string;
     options?: RelayRequestOptions;
   },
   config: Config
 ): Promise<RelayResponse> => {
   try {
-    const { signature, struct, syncFeeParams, options } = payload;
+    const { signature, struct, syncFeeParams, options, jwtToken } = payload;
 
     const isSupported = await isNetworkSupported(
       { chainId: struct.chainId },
@@ -42,6 +44,7 @@ export const callWithSyncFeeERC2771WithSignature = async (
           BaseCallWithSyncFeeParams &
           RelayRequestOptions &
           UserAuthSignature &
+          JwtToken &
           ConcurrencyOptions,
         RelayResponse
       >(
@@ -53,6 +56,7 @@ export const callWithSyncFeeERC2771WithSignature = async (
             isRelayContext: syncFeeParams.isRelayContext ?? true,
             userSignature: signature,
             isConcurrent,
+            jwtToken,
             gasLimit: options?.gasLimit
               ? options.gasLimit.toString()
               : undefined,
@@ -68,6 +72,7 @@ export const callWithSyncFeeERC2771WithSignature = async (
           BaseCallWithSyncFeeParams &
           RelayRequestOptions &
           UserAuthSignature &
+          JwtToken &
           ConcurrencyOptions,
         RelayResponse
       >(
@@ -79,6 +84,7 @@ export const callWithSyncFeeERC2771WithSignature = async (
             isRelayContext: syncFeeParams.isRelayContext ?? true,
             userSignature: signature,
             isConcurrent,
+            jwtToken,
             gasLimit: options?.gasLimit
               ? options.gasLimit.toString()
               : undefined,
