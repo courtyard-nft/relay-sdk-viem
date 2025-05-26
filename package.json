@@ -1,10 +1,9 @@
 {
-  "name": "@gelatonetwork/relay-sdk-viem",
-  "version": "1.4.0",
+  "name": "relay-sdk-viem",
+  "version": "1.4.2",
   "description": "SDK to integrate with Gelato Relay with viem",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "private": false,
   "publishConfig": {
     "access": "public"
   },
