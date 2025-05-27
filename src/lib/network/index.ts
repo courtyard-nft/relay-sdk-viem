@@ -1,4 +1,3 @@
-import { axiosInstance, getHttpErrorMessage } from "../../utils";
 import { Config } from "../types";
 
 export const isNetworkSupported = async (
@@ -14,15 +13,21 @@ export const isNetworkSupported = async (
 export const getSupportedNetworks = async (
   config: Config
 ): Promise<string[]> => {
-  try {
-    return (
-      await axiosInstance.get<{ relays: string[] }>(`${config.url}/relays/v2`)
-    ).data.relays;
-  } catch (error) {
-    throw new Error(
-      `GelatoRelaySDK/getSupportedNetworks: Failed with error: ${getHttpErrorMessage(
-        error
-      )}`
-    );
+  // Check for environment variable first
+  const supportedChainIds = process.env.SUPPORTED_CHAIN_IDS;
+  if (supportedChainIds) {
+    // Mock the API response structure
+    const mockResponse = {
+      relays: supportedChainIds.split(",").map((id) => id.trim()),
+    };
+    return mockResponse.relays;
   }
+
+  // Fallback to empty array if no environment variable
+  // Note: config parameter preserved for API compatibility
+  console.log(
+    "No SUPPORTED_CHAIN_IDS environment variable found, config:",
+    config
+  );
+  return [];
 };

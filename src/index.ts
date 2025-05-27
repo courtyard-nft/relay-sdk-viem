@@ -79,6 +79,13 @@ export class GelatoRelay {
     if (!url) {
       throw new Error("GELATO_RELAY_URL is not set");
     }
+    const supportedChains = process.env.SUPPORTED_CHAIN_IDS;
+    if (supportedChains && !supportedChains.match(/^(\d+\s*,\s*)*\d+$/)) {
+      throw new Error(
+        "SUPPORTED_CHAINS must be a comma-separated list of chain IDs"
+      );
+    }
+
     return {
       url,
       websocketUrl: url.replace(/^http/, "ws"),
