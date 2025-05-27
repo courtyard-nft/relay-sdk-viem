@@ -1,6 +1,6 @@
 {
   "name": "relay-sdk-viem",
-  "version": "1.4.2",
+  "version": "1.4.4",
   "description": "SDK to integrate with Gelato Relay with viem",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
